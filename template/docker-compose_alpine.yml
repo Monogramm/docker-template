@@ -7,16 +7,16 @@ services:
       context: ./test
       dockerfile: Dockerfile
     depends_on:
-      - $$app_slug$$db
-      - $$app_slug$$
-      - $$app_slug$$nginx
+      - __app_slug__db
+      - __app_slug__
+      - __app_slug__nginx
     volumes_from:
-      - $$app_slug$$
+      - __app_slug__
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
 
-  $$app_slug$$:
+  __app_slug__:
     # For development or CI, tag build from local Dockerfile
     build:
       context: ./
@@ -27,54 +27,54 @@ services:
         - BUILD_DATE=${BUILD_DATE}
     # For production, download prebuilt image
     image: ${IMAGE_NAME}
-    container_name: $$app_slug$$
+    container_name: __app_slug__
     #restart: always
     depends_on:
-      - $$app_slug$$db
+      - __app_slug__db
     links:
-      - $$app_slug$$db
+      - __app_slug__db
     #ports:
     #  - 9000:9000
     volumes:
-      - /srv/$$app_slug$$/html:/var/www/html
+      - /srv/__app_slug__/html:/var/www/html
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
     environment:
-      - $$app_uppercase_slug$$_DB_TYPE=pgsql
-      - $$app_uppercase_slug$$_DB_HOST=$$app_slug$$db # same as pgsql container name
-      - $$app_uppercase_slug$$_DB_NAME=$$app_slug$$ # same as pgsql POSTGRES_DB env name
-      - $$app_uppercase_slug$$_DB_USER=$$app_slug$$ # same as pgsql POSTGRES_USER env name
-      - $$app_uppercase_slug$$_DB_PASSWORD=$$app_slug$$ # same as pgsql POSTGRES_PASSWORD env name
+      - __app_uppercase_slug___DB_TYPE=pgsql
+      - __app_uppercase_slug___DB_HOST=__app_slug__db # same as pgsql container name
+      - __app_uppercase_slug___DB_NAME=__app_slug__ # same as pgsql POSTGRES_DB env name
+      - __app_uppercase_slug___DB_USER=__app_slug__ # same as pgsql POSTGRES_USER env name
+      - __app_uppercase_slug___DB_PASSWORD=__app_slug__ # same as pgsql POSTGRES_PASSWORD env name
 
-  $$app_slug$$db:
+  __app_slug__db:
     image: postgres:latest
-    container_name: $$app_slug$$db
+    container_name: __app_slug__db
     restart: always
     #ports:
     #  - 5432:5432
     volumes:
-      - /srv/$$app_slug$$/db:/var/lib/postgresql/data
+      - /srv/__app_slug__/db:/var/lib/postgresql/data
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
     environment:
-      - POSTGRES_DB=$$app_slug$$
-      - POSTGRES_USER=$$app_slug$$
-      - POSTGRES_PASSWORD=$$app_slug$$
+      - POSTGRES_DB=__app_slug__
+      - POSTGRES_USER=__app_slug__
+      - POSTGRES_PASSWORD=__app_slug__
 
-  $$app_slug$$nginx:
+  __app_slug__nginx:
     image: nginx:latest
-    container_name: $$app_slug$$nginx
+    container_name: __app_slug__nginx
     restart: always
     ports:
       - 80:80
       # If you need SSL connection
       # - '443:443'
     depends_on:
-      - $$app_slug$$
+      - __app_slug__
     links:
-      - $$app_slug$$
+      - __app_slug__
     volumes:
-      - /srv/$$app_slug$$/html:/var/www/html
+      - /srv/__app_slug__/html:/var/www/html
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
       # TODO Provide a custom nginx conf
@@ -84,4 +84,4 @@ services:
       # - ./certs-data:/data/letsencrypt
     environment:
       - NGINX_HOST=localhost # set your local domain or your live domain
-      # - NGINX_CGI=$$app_slug$$:9000 # same as $$app_slug$$ container name
+      # - NGINX_CGI=__app_slug__:9000 # same as __app_slug__ container name
