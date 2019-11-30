@@ -6,8 +6,6 @@ services:
     build:
       context: ./test
       dockerfile: Dockerfile
-      args: 
-        - %%IMAGE_NAME%%
     depends_on:
       - $$app_slug$$db
       - $$app_slug$$
