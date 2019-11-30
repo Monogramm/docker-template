@@ -1,9 +1,9 @@
+os: linux
 dist: trusty
-sudo: required
 
 services: docker
 
-language: bash
+language: shell
 
 branches:
   only:
@@ -12,7 +12,7 @@ branches:
 
 before_script:
   - env | sort
-  - dir="images/${VERSION}/${VARIANT:+-$VARIANT}"
+  - dir="images/${VERSION}/${VARIANT}"
   - export TAG=travis
   - export VCS_REF=`git rev-parse --short HEAD`
   - export BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"`
