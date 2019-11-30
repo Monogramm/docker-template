@@ -16,7 +16,7 @@ before_script:
   - export TAG=travis
   - export VCS_REF=`git rev-parse --short HEAD`
   - export BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"`
-  - export IMAGE_NAME=docker-__app_slug__:${VARIANT}
+  - export IMAGE_NAME=docker-__app_slug__
 
 script:
   - cd "$dir"
