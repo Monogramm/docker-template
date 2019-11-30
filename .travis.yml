@@ -1,0 +1,52 @@
+dist: trusty
+sudo: required
+
+services: docker
+
+language: bash
+
+branches:
+  only:
+    - master
+    - develop
+
+before_script:
+  - env | sort
+  - dir="images/${VERSION}/${VARIANT:+-$VARIANT}"
+  - export TAG=travis
+  - export VCS_REF=`git rev-parse --short HEAD`
+  - export BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"`
+
+script:
+  - cd "$dir"
+  # Test containers build
+  - docker-compose -f docker-compose.test.yml build
+  - docker images
+  # Test containers run
+  - travis_retry docker-compose -f docker-compose.test.yml up -d && sleep 60
+  - docker-compose -f docker-compose.test.yml ps
+  - docker-compose -f docker-compose.test.yml logs "$$app_slug$$db"
+  - docker-compose -f docker-compose.test.yml ps "$$app_slug$$db" | grep "Up"
+  - docker-compose -f docker-compose.test.yml logs "$$app_slug$$"
+  - docker-compose -f docker-compose.test.yml ps "$$app_slug$$" | grep "Up"
+  - echo 'Wait until containers init and tests are over' && sleep 60
+  - docker-compose -f docker-compose.test.yml logs "sut"
+  - docker-compose -f docker-compose.test.yml ps "sut" | grep "Exit 0"
+  # Test containers can be dropped and restarted
+  - docker-compose -f docker-compose.test.yml down
+  - travis_retry docker-compose -f docker-compose.test.yml up -d && sleep 60
+  - docker-compose -f docker-compose.test.yml ps
+  - docker-compose -f docker-compose.test.yml logs "$$app_slug$$db"
+  - docker-compose -f docker-compose.test.yml ps "$$app_slug$$db" | grep "Up"
+  - docker-compose -f docker-compose.test.yml logs "$$app_slug$$"
+  - docker-compose -f docker-compose.test.yml ps "$$app_slug$$" | grep "Up"
+  - echo 'Wait until containers init and tests are over' && sleep 60
+  - docker-compose -f docker-compose.test.yml logs "sut"
+  - docker-compose -f docker-compose.test.yml ps "sut" | grep "Exit 0"
+
+notifications:
+  email: false
+
+env: # Environments
+    - VERSION=1.0 VARIANT=alpine
+    - VERSION=1.0 VARIANT=debian

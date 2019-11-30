@@ -1,0 +1,64 @@
+version: "2"
+
+services:
+  # https://docs.docker.com/docker-hub/builds/automated-testing/
+  sut:
+    build:
+      context: ./test
+      dockerfile: Dockerfile
+    depends_on:
+      - $$app_slug$$db
+      - $$app_slug$$
+      - $$app_slug$$nginx
+    volumes_from:
+      - $$app_slug$$
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+
+  $$app_slug$$:
+    # For development or CI, tag build from local Dockerfile
+    build:
+      context: ./
+      dockerfile: Dockerfile
+      args: 
+        - TAG=${TAG}
+        - VCS_REF=${VCS_REF}
+        - BUILD_DATE=${BUILD_DATE}
+    # For production, download prebuilt image
+    image: ${IMAGE_NAME}
+    container_name: $$app_slug$$
+    #restart: always
+    depends_on:
+      - $$app_slug$$db
+    links:
+      - $$app_slug$$db
+    ports:
+      - 80:80
+    volumes:
+      - /srv/$$app_slug$$/html:/var/www/html
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    environment:
+      - $$app_uppercase_slug$$_DB_TYPE=mysql
+      - $$app_uppercase_slug$$_DB_HOST=$$app_slug$$db # same as mysql container name
+      - $$app_uppercase_slug$$_DB_NAME=$$app_slug$$ # same as mysql MYSQL_DATABASE env name
+      - $$app_uppercase_slug$$_DB_USER=$$app_slug$$ # same as mysql MYSQL_USER env name
+      - $$app_uppercase_slug$$_DB_PASSWORD=$$app_slug$$dbpass # same as mysql MYSQL_PASSWORD env name
+
+  $$app_slug$$db:
+    image: mariadb:latest
+    container_name: $$app_slug$$db
+    restart: always
+    command: --character_set_client=utf8 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --character-set-client-handshake=FALSE
+    #ports:
+    #  - 3306:3306
+    volumes:
+      - /srv/$$app_slug$$/db:/var/lib/mysql
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    environment:
+      - MYSQL_ROOT_PASSWORD=mysqlrootpassword
+      - MYSQL_DATABASE=$$app_slug$$
+      - MYSQL_USER=$$app_slug$$
+      - MYSQL_PASSWORD=$$app_slug$$dbpass
