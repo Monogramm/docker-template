@@ -26,7 +26,7 @@ services:
         - VCS_REF=${VCS_REF}
         - BUILD_DATE=${BUILD_DATE}
     # For production, download prebuilt image
-    image: ${IMAGE_NAME}
+    #image: ${IMAGE_NAME}
     container_name: __app_slug__
     #restart: always
     depends_on:
