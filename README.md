@@ -2,7 +2,7 @@
 [uri_license]: http://www.gnu.org/licenses/agpl.html
 [uri_license_image]: https://img.shields.io/badge/License-AGPL%20v3-blue.svg
 
-[![License: GPL v3][uri_license_image]][uri_license]
+[![License: AGPL v3][uri_license_image]][uri_license]
 [![Build Status](https://travis-ci.org/Monogramm/docker-__app_slug__.svg)](https://travis-ci.org/Monogramm/docker-__app_slug__)
 [![Docker Automated buid](https://img.shields.io/docker/cloud/build/monogramm/docker-__app_slug__.svg)](https://hub.docker.com/r/monogramm/docker-__app_slug__/)
 [![Docker Pulls](https://img.shields.io/docker/pulls/monogramm/docker-__app_slug__.svg)](https://hub.docker.com/r/monogramm/docker-__app_slug__/)
