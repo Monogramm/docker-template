@@ -29,17 +29,17 @@ After replacing all variables:
 
 -->
 
-# __app_name__ Docker image
+# **__app_name__** Docker image
 
-Docker image for __app_name__.
+Docker image for **__app_name__**.
 
 :construction: **This image is still in development!**
 
-## What is __app_name__ ?
+## What is **__app_name__** ?
 
 __app_description__
 
-> [__app_name__](__app_url__)
+> [**__app_name__**](__app_url__)
 
 ## Supported tags
 
@@ -53,11 +53,11 @@ __app_description__
 <!--
     If based on official images, refer to official doc:
 
-See __app_name__ base image documentation for details.
+See **__app_name__** base image documentation for details.
 
-> [__app_name__ GitHub](https://github.com/__app_owner_slug__/__app_slug__)
+> [**__app_name__** GitHub](https://github.com/__app_owner_slug__/__app_slug__)
 
-> [__app_name__ DockerHub](https://hub.docker.com/r/__app_owner_slug__/docker-__app_slug__-base/)
+> [**__app_name__** DockerHub](https://hub.docker.com/r/__app_owner_slug__/docker-__app_slug__-base/)
 
 -->
 
