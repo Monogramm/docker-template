@@ -2,13 +2,14 @@
 [uri_license]: http://www.gnu.org/licenses/agpl.html
 [uri_license_image]: https://img.shields.io/badge/License-AGPL%20v3-blue.svg
 
-[![License: GPL v3][uri_license_image]][uri_license]
+[![License: AGPL v3][uri_license_image]][uri_license]
+[![Docs](https://img.shields.io/badge/Docs-Github%20Pages-blue)](https://monogramm.github.io/__app_slug__/)
 [![Build Status](https://travis-ci.org/Monogramm/docker-__app_slug__.svg)](https://travis-ci.org/Monogramm/docker-__app_slug__)
 [![Docker Automated buid](https://img.shields.io/docker/cloud/build/monogramm/docker-__app_slug__.svg)](https://hub.docker.com/r/monogramm/docker-__app_slug__/)
 [![Docker Pulls](https://img.shields.io/docker/pulls/monogramm/docker-__app_slug__.svg)](https://hub.docker.com/r/monogramm/docker-__app_slug__/)
 [![Docker Version](https://images.microbadger.com/badges/version/monogramm/docker-__app_slug__.svg)](https://microbadger.com/images/monogramm/docker-__app_slug__)
 [![Docker Size](https://images.microbadger.com/badges/image/monogramm/docker-__app_slug__.svg)](https://microbadger.com/images/monogramm/docker-__app_slug__)
-[![GitHub stars](https://img.shields.io/github/stars/Monogramm/docker-__app_name__?style=social)](https://github.com/Monogramm/docker-__app_name__)
+[![GitHub stars](https://img.shields.io/github/stars/Monogramm/docker-__app_slug__?style=social)](https://github.com/Monogramm/docker-__app_slug__)
 
 <!--
 
@@ -42,7 +43,7 @@ __app_description__
 
 ## Supported tags
 
-https://hub.docker.com/r/monogramm/docker-__app_slug__/
+[Dockerhub monogramm/docker-__app_slug__](https://hub.docker.com/r/monogramm/docker-__app_slug__/)
 
 * `alpine` `latest`
 * `debian`
