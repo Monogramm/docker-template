@@ -1,4 +1,4 @@
-#!/usr/bin/sh
+#!/bin/sh
 
 set -e
 
@@ -6,7 +6,7 @@ echo "Waiting to ensure everything is fully ready for the tests..."
 sleep 60
 
 echo "Checking main containers are reachable..."
-if ! sudo ping -c 10 -q __app_slug__db ; then
+if ! ping -c 10 -q __app_slug__db ; then
     echo '__app_name__ Database container is not responding!'
     # TODO Display logs to help bug fixing
     #echo 'Check the following logs for details:'
@@ -14,7 +14,7 @@ if ! sudo ping -c 10 -q __app_slug__db ; then
     exit 2
 fi
 
-if ! sudo ping -c 10 -q __app_slug__ ; then
+if ! ping -c 10 -q __app_slug__ ; then
     echo '__app_name__ Main container is not responding!'
     # TODO Display logs to help bug fixing
     #echo 'Check the following logs for details:'
@@ -22,7 +22,7 @@ if ! sudo ping -c 10 -q __app_slug__ ; then
     exit 4
 fi
 
-if ! sudo ping -c 10 -q __app_slug__nginx ; then
+if ! ping -c 10 -q __app_slug__nginx ; then
     echo '__app_name__ Nginx container is not responding!'
     # TODO Display logs to help bug fixing
     #echo 'Check the following logs for details:'
