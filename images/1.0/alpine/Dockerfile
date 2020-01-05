@@ -7,7 +7,6 @@ RUN set -ex; \
     echo 'ADD INSTALL OPERATIONS'
 
 # Arguments to label built container
-ARG TAG
 ARG VCS_REF
 ARG BUILD_DATE
 ARG VERSION=1.0.0
