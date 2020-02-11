@@ -4,7 +4,7 @@ FROM debian
 
 # Add requirements and install application
 RUN set -ex; \
-    echo 'ADD INSTALL OPERATIONS'
+    echo '[TODO] ADD INSTALL OPERATIONS'
 
 # Arguments to label built container
 ARG VCS_REF

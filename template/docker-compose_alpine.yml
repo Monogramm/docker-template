@@ -7,9 +7,9 @@ services:
       context: ./test
       dockerfile: Dockerfile
     depends_on:
-      - __app_slug__db
+      - __app_slug__-db
       - __app_slug__
-      - __app_slug__nginx
+      - __app_slug__-nginx
     volumes_from:
       - __app_slug__
     volumes:
@@ -30,40 +30,40 @@ services:
     container_name: __app_slug__
     #restart: always
     depends_on:
-      - __app_slug__db
+      - __app_slug__-db
     links:
-      - __app_slug__db
+      - __app_slug__-db
     #ports:
     #  - 9000:9000
     volumes:
-      - /srv/__app_slug__/html:/var/www/html
+      - $__app_uppercase_slug___HOME/html:/var/www/html
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
     environment:
       - __app_uppercase_slug___DB_TYPE=pgsql
-      - __app_uppercase_slug___DB_HOST=__app_slug__db # same as pgsql container name
-      - __app_uppercase_slug___DB_NAME=__app_slug__ # same as pgsql POSTGRES_DB env name
-      - __app_uppercase_slug___DB_USER=__app_slug__ # same as pgsql POSTGRES_USER env name
-      - __app_uppercase_slug___DB_PASSWORD=__app_slug__ # same as pgsql POSTGRES_PASSWORD env name
+      - __app_uppercase_slug___DB_HOST=$__app_slug__-db # same as pgsql container name
+      - __app_uppercase_slug___DB_NAME=$__app_uppercase_slug___DB_NAME
+      - __app_uppercase_slug___DB_USER=$__app_uppercase_slug___DB_USER
+      - __app_uppercase_slug___DB_PASSWORD=$__app_uppercase_slug___DB_PASSWD
 
-  __app_slug__db:
+  __app_slug__-db:
     image: postgres:latest
-    container_name: __app_slug__db
+    container_name: __app_slug__-db
     restart: always
     #ports:
     #  - 5432:5432
     volumes:
-      - /srv/__app_slug__/db:/var/lib/postgresql/data
+      - $__app_uppercase_slug___HOME/db:/var/lib/postgresql/data
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
     environment:
-      - POSTGRES_DB=__app_slug__
-      - POSTGRES_USER=__app_slug__
-      - POSTGRES_PASSWORD=__app_slug__
+      - POSTGRES_DB=$__app_uppercase_slug___DB_NAME
+      - POSTGRES_USER=$__app_uppercase_slug___DB_USER
+      - POSTGRES_PASSWORD=$__app_uppercase_slug___DB_PASSWD
 
-  __app_slug__nginx:
+  __app_slug__-nginx:
     image: nginx:latest
-    container_name: __app_slug__nginx
+    container_name: __app_slug__-nginx
     restart: always
     ports:
       - 80:80
@@ -74,7 +74,7 @@ services:
     links:
       - __app_slug__
     volumes:
-      - /srv/__app_slug__/html:/var/www/html
+      - $__app_uppercase_slug___HOME/html:/var/www/html
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
       # TODO Provide a custom nginx conf
