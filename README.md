@@ -1,4 +1,3 @@
-
 <!--
 
 Template variables to replace in ALL files:
@@ -16,9 +15,6 @@ After replacing all variables:
 * Edit `template/test` content for DockerHub custom tests
 
 -->
-
-[uri_license]: http://www.gnu.org/licenses/agpl.html
-[uri_license_image]: https://img.shields.io/badge/License-AGPL%20v3-blue.svg
 
 [![License: AGPL v3][uri_license_image]][uri_license]
 [![Docs](https://img.shields.io/badge/Docs-Github%20Pages-blue)](https://monogramm.github.io/__app_slug__/)
@@ -45,8 +41,8 @@ __app_description__
 
 [Dockerhub monogramm/docker-__app_slug__](https://hub.docker.com/r/monogramm/docker-__app_slug__/)
 
-* `alpine` `latest`
-* `debian`
+-   `alpine` `latest`
+-   `debian`
 
 ## How to run this image ?
 
@@ -62,4 +58,10 @@ See **__app_name__** base image documentation for details.
 -->
 
 # Questions / Issues
+
 If you got any questions or problems using the image, please visit our [Github Repository](https://github.com/Monogramm/docker-__app_slug__) and write an issue.
+
+
+[uri_license]: http://www.gnu.org/licenses/agpl.html
+
+[uri_license_image]: https://img.shields.io/badge/License-AGPL%20v3-blue.svg
