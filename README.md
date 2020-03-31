@@ -31,7 +31,7 @@ Docker image for **__app_name__**.
 
 :construction: **This image is still in development!**
 
-## What is **__app_name__** ?
+## What is **__app_name__**
 
 __app_description__
 
@@ -44,7 +44,7 @@ __app_description__
 -   `alpine` `latest`
 -   `debian`
 
-## How to run this image ?
+## How to run this image
 
 <!--
     If based on official images, refer to official doc:
@@ -57,7 +57,7 @@ See **__app_name__** base image documentation for details.
 
 -->
 
-# Questions / Issues
+## Questions / Issues
 
 If you got any questions or problems using the image, please visit our [Github Repository](https://github.com/Monogramm/docker-__app_slug__) and write an issue.
 
