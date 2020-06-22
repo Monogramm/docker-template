@@ -1,4 +1,4 @@
-version: "2"
+version: "2.3"
 
 services:
   # https://docs.docker.com/docker-hub/builds/automated-testing/
@@ -7,9 +7,12 @@ services:
       context: ./test
       dockerfile: Dockerfile
     depends_on:
-      - __app_slug__-db
-      - __app_slug__
-      - __app_slug__-nginx
+      __app_slug__-db:
+        condition: service_started
+      __app_slug__:
+        condition: service_started
+      __app_slug__-nginx:
+        condition: service_started
     volumes_from:
       - __app_slug__
     volumes:
@@ -30,18 +33,19 @@ services:
     container_name: __app_slug__
     #restart: always
     depends_on:
-      - __app_slug__-db
+      __app_slug__-db:
+        condition: service_healthy
     links:
       - __app_slug__-db
     #ports:
-    #  - 9000:9000
+    #  - "9000:9000"
     volumes:
       - $__app_uppercase_slug___HOME/html:/var/www/html
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
     environment:
       - __app_uppercase_slug___DB_TYPE=pgsql
-      - __app_uppercase_slug___DB_HOST=$__app_slug__-db # same as pgsql container name
+      - __app_uppercase_slug___DB_HOST=$__app_slug__-db
       - __app_uppercase_slug___DB_NAME=$__app_uppercase_slug___DB_NAME
       - __app_uppercase_slug___DB_USER=$__app_uppercase_slug___DB_USER
       - __app_uppercase_slug___DB_PASSWORD=$__app_uppercase_slug___DB_PASSWD
@@ -51,7 +55,9 @@ services:
     container_name: __app_slug__-db
     restart: always
     #ports:
-    #  - 5432:5432
+    #  - "5432:5432"
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${__app_uppercase_slug___DB_NAME}"]
     volumes:
       - $__app_uppercase_slug___HOME/db:/var/lib/postgresql/data
       - /etc/localtime:/etc/localtime:ro
@@ -66,11 +72,12 @@ services:
     container_name: __app_slug__-nginx
     restart: always
     ports:
-      - 80:80
+      - "80:80"
       # If you need SSL connection
-      # - '443:443'
+      # - "443:443"
     depends_on:
-      - __app_slug__
+      __app_slug__:
+        condition: service_started
     links:
       - __app_slug__
     volumes:

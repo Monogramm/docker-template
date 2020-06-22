@@ -6,6 +6,11 @@ FROM alpine
 RUN set -ex; \
     echo '[TODO] ADD INSTALL OPERATIONS'
 
+ADD ./entrypoint.sh /
+
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["--help"]
+
 # Arguments to label built container
 ARG VCS_REF
 ARG BUILD_DATE
