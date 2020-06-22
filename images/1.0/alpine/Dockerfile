@@ -6,7 +6,7 @@ FROM alpine
 RUN set -ex; \
     echo '[TODO] ADD INSTALL OPERATIONS'
 
-ADD ./entrypoint.sh /
+COPY ./entrypoint.sh /
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["--help"]
