@@ -1,5 +1,10 @@
 version: "2.3"
 
+networks:
+  __app_uppercase_slug___external_network:
+  __app_uppercase_slug___internal_network:
+    internal: true
+
 services:
   # https://docs.docker.com/docker-hub/builds/automated-testing/
   sut:
@@ -11,6 +16,8 @@ services:
         condition: service_healthy
       __app_slug__:
         condition: service_started
+    networks:
+      - __app_uppercase_slug___internal_network
     volumes_from:
       - __app_slug__
     volumes:
@@ -35,8 +42,13 @@ services:
         condition: service_healthy
     links:
       - __app_slug__-db
+    expose:
+      - '80'
     ports:
       - "80:80"
+    networks:
+      - __app_uppercase_slug___internal_network
+      - __app_uppercase_slug___external_network
     volumes:
       - $__app_uppercase_slug___HOME/html:/var/www/html
       - /etc/localtime:/etc/localtime:ro
@@ -53,12 +65,16 @@ services:
     container_name: __app_slug__-db
     restart: always
     command: --character_set_client=utf8 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --character-set-client-handshake=FALSE
-    #ports:
-    #  - "3306:3306"
     healthcheck:
-      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost", "--password=${$__app_uppercase_slug___DB_ROOT_PASSWD}"]
       timeout: 10s
       retries: 5
+    expose:
+      - '3306'
+    #ports:
+    #  - "3306:3306"
+    networks:
+      - __app_uppercase_slug___internal_network
     volumes:
       - $__app_uppercase_slug___HOME/db:/var/lib/mysql
       - /etc/localtime:/etc/localtime:ro
