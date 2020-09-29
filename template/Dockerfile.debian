@@ -16,6 +16,11 @@ ARG VCS_REF
 ARG BUILD_DATE
 ARG VERSION=%%VERSION%%
 
+# Keep track of image version
+RUN set -ex; \
+    mkdir -p '/app/src'; \
+    echo "${VERSION} ${VCS_REF} ${BUILD_DATE}" > '/app/src/.docker-version'
+
 # Container labels (http://label-schema.org/)
 # Container annotations (https://github.com/opencontainers/image-spec)
 LABEL maintainer="Monogramm maintainers <opensource at monogramm dot io>" \
