@@ -45,13 +45,12 @@ for latest in "${latests[@]}"; do
 	if version_greater_or_equal "$version" "$min_version"; then
 
 		for variant in "${variants[@]}"; do
-			echo "Updating $latest [$version-$variant]"
-
 			# Create the version directory with a Dockerfile.
 			dir="images/$version/$variant"
 			if [ -d "$dir" ]; then
 				continue
 			fi
+			echo "Updating $latest [$version-$variant]"
 			mkdir -p "$dir"
 
 			template="Dockerfile.${base[$variant]}"
