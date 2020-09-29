@@ -1,8 +1,8 @@
 version: "2.3"
 
 networks:
-  __app_uppercase_slug___external_network:
-  __app_uppercase_slug___internal_network:
+  __app_slug___external_network:
+  __app_slug___internal_network:
     internal: true
 
 services:
@@ -17,7 +17,7 @@ services:
       __app_slug__:
         condition: service_started
     networks:
-      - __app_uppercase_slug___internal_network
+      - __app_slug___internal_network
     volumes_from:
       - __app_slug__
     volumes:
@@ -47,8 +47,8 @@ services:
     ports:
       - "80:80"
     networks:
-      - __app_uppercase_slug___internal_network
-      - __app_uppercase_slug___external_network
+      - __app_slug___internal_network
+      - __app_slug___external_network
     volumes:
       - $__app_uppercase_slug___HOME/html:/var/www/html
       - /etc/localtime:/etc/localtime:ro
@@ -74,7 +74,7 @@ services:
     #ports:
     #  - "3306:3306"
     networks:
-      - __app_uppercase_slug___internal_network
+      - __app_slug___internal_network
     volumes:
       - $__app_uppercase_slug___HOME/db:/var/lib/mysql
       - /etc/localtime:/etc/localtime:ro
