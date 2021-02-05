@@ -11,12 +11,19 @@ declare -A base=(
 	[alpine]='alpine'
 )
 
+declare -A dockerVariant=(
+	[debian]='debian'
+	[alpine]='alpine'
+)
+
 variants=(
 	debian
 	alpine
 )
 
 min_version='1.0'
+dockerLatest='1.0'
+dockerDefaultVariant='alpine'
 
 
 # version_greater_or_equal A B returns whether A >= B
@@ -33,10 +40,11 @@ latests=( 1.0.0 )
 
 # Remove existing images
 echo "reset docker images"
-find ./images -maxdepth 1 -type d -regextype sed -regex '\./images/[[:digit:]]\+\.[[:digit:]]\+' -exec rm -r '{}' \;
-#rm -rf ./images/*
+rm -rf ./images/
+mkdir ./images/
 
 echo "update docker images"
+readmeTags=
 travisEnv=
 for latest in "${latests[@]}"; do
 	version=$(echo "$latest" | cut -d. -f1-2)
@@ -69,6 +77,37 @@ for latest in "${latests[@]}"; do
 				s/%%VERSION%%/'"$latest"'/g;
 			' "$dir/Dockerfile"
 
+			sed -ri -e '
+				s|DOCKER_TAG=.*|DOCKER_TAG='"$version"'|g;
+				s|DOCKER_REPO=.*|DOCKER_REPO='"$dockerRepo"'|g;
+			' "$dir/hooks/run"
+
+			# Create a list of "alias" tags for DockerHub post_push
+			tagVariant=${dockerVariant[$variant]}
+			if [ "$version" = "$dockerLatest" ]; then
+				if [ "$tagVariant" = "$dockerDefaultVariant" ]; then
+					export DOCKER_TAGS="$latest-$tagVariant $version-$tagVariant $tagVariant $latest $version latest "
+				else
+					export DOCKER_TAGS="$latest-$tagVariant $version-$tagVariant $tagVariant "
+				fi
+			elif [ "$version" = "$latest" ]; then
+				if [ "$tagVariant" = "$dockerDefaultVariant" ]; then
+					export DOCKER_TAGS="$latest-$tagVariant $latest "
+				else
+					export DOCKER_TAGS="$latest-$tagVariant "
+				fi
+			else
+				if [ "$tagVariant" = "$dockerDefaultVariant" ]; then
+					export DOCKER_TAGS="$latest-$tagVariant $version-$tagVariant $latest $version "
+				else
+					export DOCKER_TAGS="$latest-$tagVariant $version-$tagVariant "
+				fi
+			fi
+			echo "${DOCKER_TAGS} " > "$dir/.dockertags"
+
+			# Add README tags
+			readmeTags="$readmeTags\n-   ${DOCKER_TAGS} (\`$dir/Dockerfile\`)"
+
 			# Add Travis-CI env var
 			travisEnv='\n    - VERSION='"$version"' VARIANT='"$variant$travisEnv"
 
@@ -81,6 +120,11 @@ for latest in "${latests[@]}"; do
 	fi
 
 done
+
+# update README.md
+sed '/^<!-- >Docker Tags -->/,/^<!-- <Docker Tags -->/{/^<!-- >Docker Tags -->/!{/^<!-- <Docker Tags -->/!d}}' README.md > README.md.tmp
+sed -e "s|<!-- >Docker Tags -->|<!-- >Docker Tags -->\n$readmeTags\n|g" README.md.tmp > README.md
+rm README.md.tmp
 
 # update .travis.yml
 travis="$(awk -v 'RS=\n\n' '$1 == "env:" && $2 == "#" && $3 == "Environments" { $0 = "env: # Environments'"$travisEnv"'" } { printf "%s%s", $0, RS }' .travis.yml)"

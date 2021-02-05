@@ -1,9 +1,13 @@
-FROM alpine:3
+FROM alpine:3.12
 
 COPY docker_test.sh /docker_test.sh
 
 RUN set -ex; \
-    echo '[TODO] PREPARE TEST OPERATIONS'; \
-    chmod 755 /docker_test.sh;
+    chmod 755 /docker_test.sh; \
+    apk add --update \
+        curl \
+    ; \
+    \
+    rm -rf /var/cache/apk/*
 
 CMD ["/docker_test.sh"]

@@ -1,4 +1,4 @@
-FROM alpine
+FROM alpine:3.12
 # If based on official images
 # FROM __app_owner_slug__/__app_slug__:alpine
 
@@ -15,6 +15,11 @@ CMD ["--help"]
 ARG VCS_REF
 ARG BUILD_DATE
 ARG VERSION=1.0.0
+
+# Keep track of image version
+RUN set -ex; \
+    mkdir -p '/app/src'; \
+    echo "${VERSION} ${VCS_REF} ${BUILD_DATE}" > '/app/src/.docker-version'
 
 # Container labels (http://label-schema.org/)
 # Container annotations (https://github.com/opencontainers/image-spec)

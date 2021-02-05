@@ -1,7 +1,7 @@
 #!/bin/sh
 ##
 ##    Docker image for __app_name__.
-##    Copyright (C) 2020  Monogramm
+##    Copyright (C) 2021 Monogramm
 ##
 set -e
 
@@ -9,7 +9,7 @@ set -e
 # Functions
 
 log() {
-    echo "[$0] [$(date +%Y-%m-%dT%H:%M:%S%:z)] $@"
+    echo "[$0] [$(date +%Y-%m-%dT%H:%M:%S%:z)] $*"
 }
 
 # wait for file/directory to exists
@@ -134,8 +134,8 @@ Options:
 # Execute task based on command
 case "${1}" in
 # Management tasks
-"--help") print_help ;;
-    # Service tasks
-"start") start ;;
+-h|--help) print_help ;;
+# Service tasks
+start) start ;;
 *) exec "$@" ;;
 esac
