@@ -1,4 +1,4 @@
-FROM alpine:3.12
+FROM alpine:3.13.7
 # If based on official images
 # FROM __app_owner_slug__/__app_slug__:alpine
 
